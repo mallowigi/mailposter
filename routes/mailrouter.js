@@ -26,13 +26,13 @@ if (!isDev) {
 	}
 } else {
 	transport = {
-		host: 'smtp.ethereal.email',
-		port: 587,
+		host: 'localhost',
+		port: 1025,
 		//create a Ethereal test account @https://ethereal.email/create
-		auth: {
-			user: process.env.SMTP_DEV_EMAIL,
-			pass: process.env.SMTP_DEV_PASSWORD,
-		},
+		// auth: {
+		// 	user: process.env.SMTP_DEV_EMAIL,
+		// 	pass: process.env.SMTP_DEV_PASSWORD,
+		// },
 	}
 }
 
@@ -67,30 +67,26 @@ router.get('/mailrouter', (req, res) => {
 })
 
 router.post('/mailrouter', (req, res) => {
-	// req.body contains the text fields
-	response = {
-		name: req.body.name,
-		email: req.body.email,
-		tel: req.body.tel,
-		message: req.body.message,
-	}
 	//make mailable object
 	const mailOptions = {
-		from: req.body.email, // sender address
-		to: ['you.real@gmail.com', 'you.dev@ethereal.email'], // list of receivers
+		from: `My company <localhost@mailhog.local>`, // sender address
+		to: ['heliosaian@gmail.com'], // list of receivers
 		replyTo: req.body.email,
 		subject: 'NEW FORM SUBMISSION! ✔', // Subject line
 		text: req.body.message,
-		html: `<h4>Information</h4><hr></hr><br></br> <ul><li>Name: ${req.body.name}</li><br></br> <li>Email: ${req.body.email}</li><br></br> <li>Phone: ${req.body.tel}</li><br></br><br></br> <h5>Message Details</h5><hr></hr><br></br> ${req.body.message}`,
+		html: `
+<h4>Information</h4>
+<hr><br>
+<code>${JSON.stringify(req.body, null, 2)}</code>`,
 		dsn: {
 			id: 'smtp-dsn-report',
 			return: 'full',
 			notify: ['success', 'failure', 'delay'],
-			recipient: 'you.real@gmail.com',
+			recipient: 'heliosaian@gmail.com',
 		},
 	}
 
-	//send mail to recepient
+	//send mail to recipient
 	transporter.sendMail(mailOptions, (err, res) => {
 		if (err) {
 			console.log(err)
