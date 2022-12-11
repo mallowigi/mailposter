@@ -26,7 +26,7 @@ if (!isDev) {
 	}
 } else {
 	transport = {
-		host: 'localhost',
+		host: 'mailposter.ngrok.io',
 		port: 1025,
 		//create a Ethereal test account @https://ethereal.email/create
 		// auth: {
@@ -70,7 +70,7 @@ router.post('/mailrouter', (req, res) => {
 	//make mailable object
 	const mailOptions = {
 		from: `My company <localhost@mailhog.local>`, // sender address
-		to: ['heliosaian@gmail.com'], // list of receivers
+		to: ['test@test.com'], // list of receivers
 		replyTo: req.body.email,
 		subject: 'NEW FORM SUBMISSION! ✔', // Subject line
 		text: req.body.message,
@@ -82,7 +82,7 @@ router.post('/mailrouter', (req, res) => {
 			id: 'smtp-dsn-report',
 			return: 'full',
 			notify: ['success', 'failure', 'delay'],
-			recipient: 'heliosaian@gmail.com',
+			recipient: 'test@test.com',
 		},
 	}
 
